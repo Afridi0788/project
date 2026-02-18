@@ -36,7 +36,8 @@ export const ThreeHero = () => {
     
     setTimeout(() => {
       setStarted(true);
-      initParticleText("SOLUTIONS");
+      // UPDATED: Changed text to "SOLUTIONS 2K26"
+      initParticleText("SOLUTIONS 2K26");
     }, 500);
   };
 
@@ -107,8 +108,11 @@ export const ThreeHero = () => {
     tempCtx.textAlign = 'center'; 
     tempCtx.textBaseline = 'middle';
     tempCtx.font = '900 200px "Orbitron", sans-serif'; 
-    const scale = (window.innerWidth * 0.75) / tempCtx.measureText(text).width;
+    
+    // Auto-scale text to fit screen
+    const scale = (window.innerWidth * 0.85) / tempCtx.measureText(text).width;
     tempCtx.font = `900 ${200 * scale}px "Orbitron", sans-serif`;
+    
     tempCtx.fillStyle = 'white';
     tempCtx.fillText(text, tempCanvas.width / 2, tempCanvas.height / 2 + 100);
 
@@ -340,8 +344,9 @@ export const ThreeHero = () => {
              <div className="text-center">
                 {progress < 100 ? (
                     <>
-                        <div className="text-red-600 text-5xl font-black italic tracking-[12px] mb-5 drop-shadow-[0_0_20px_rgba(255,0,0,0.6)]">
-                            SOLUTIONS
+                        {/* UPDATED: Loading Text */}
+                        <div className="text-red-600 text-3xl sm:text-5xl font-black italic tracking-[8px] sm:tracking-[12px] mb-5 drop-shadow-[0_0_20px_rgba(255,0,0,0.6)]">
+                            SOLUTIONS 2K26
                         </div>
                         <div className="w-[300px] h-0.5 bg-red-900/30 mx-auto relative overflow-hidden">
                             <div 
