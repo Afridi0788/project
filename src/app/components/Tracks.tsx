@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { MapPin, Zap, Flag, Timer } from "lucide-react";
 
 const tracks = [
@@ -9,8 +9,9 @@ const tracks = [
     category: "Street Circuit",
     length: "5.06 km",
     turns: 23,
-    image:
-      "https://images.unsplash.com/photo-1686426781747-7cd27a8e05a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmdXR1cmlzdGljJTIwcmFjZSUyMHRyYWNrJTIwbmlnaHQlMjBsaWdodHN8ZW58MXx8fHwxNzcxNDE3NzA5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    cover: "https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg",
+    titleImg: "https://ggayane.github.io/css-experiments/cards/dark_rider-title.png",
+    character: "https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp",
   },
   {
     id: 2,
@@ -18,8 +19,9 @@ const tracks = [
     category: "Endurance",
     length: "7.12 km",
     turns: 18,
-    image:
-      "https://images.unsplash.com/photo-1763805508094-901f2a79ff77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXJib24lMjBmaWJlciUyMHRleHR1cmUlMjBkYXJrfGVufDF8fHx8MTc3MTM4Mjc2OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    cover: "https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg",
+    titleImg: "https://ggayane.github.io/css-experiments/cards/force_mage-title.png",
+    character: "https://ggayane.github.io/css-experiments/cards/force_mage-character.webp",
   },
   {
     id: 3,
@@ -27,8 +29,9 @@ const tracks = [
     category: "Speed",
     length: "4.30 km",
     turns: 12,
-    image:
-      "https://images.unsplash.com/photo-1760456015398-c0119ffb0593?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmMSUyMHJhY2luZyUyMGNhciUyMHNwZWVkaW5nfGVufDF8fHx8MTc3MTQxNzcxOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    cover: "https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg",
+    titleImg: "https://ggayane.github.io/css-experiments/cards/dark_rider-title.png",
+    character: "https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp",
   },
   {
     id: 4,
@@ -36,99 +39,109 @@ const tracks = [
     category: "Drift",
     length: "3.80 km",
     turns: 28,
-    image:
-      "https://images.unsplash.com/photo-1686426781747-7cd27a8e05a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmdXR1cmlzdGljJTIwcmFjZSUyMHRyYWNrJTIwbmlnaHQlMjBsaWdodHN8ZW58MXx8fHwxNzcxNDE3NzA5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    cover: "https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg",
+    titleImg: "https://ggayane.github.io/css-experiments/cards/force_mage-title.png",
+    character: "https://ggayane.github.io/css-experiments/cards/force_mage-character.webp",
+  },
+  {
+    id: 5,
+    name: "Skyline Ridge",
+    category: "Sprint",
+    length: "2.45 km",
+    turns: 10,
+    cover: "https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg",
+    titleImg: "https://ggayane.github.io/css-experiments/cards/dark_rider-title.png",
+    character: "https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp",
+  },
+  {
+    id: 6,
+    name: "Azure Coast",
+    category: "Classic",
+    length: "6.20 km",
+    turns: 15,
+    cover: "https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg",
+    titleImg: "https://ggayane.github.io/css-experiments/cards/force_mage-title.png",
+    character: "https://ggayane.github.io/css-experiments/cards/force_mage-character.webp",
   },
 ];
 
 export const Tracks = () => {
+  // Track which card is currently active (for mobile clicks)
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+
+  const toggleCard = (id: number) => {
+    setActiveCard(activeCard === id ? null : id);
+  };
+
   return (
-    <section
-      id="tracks"
-      className="relative bg-black py-16 text-white sm:py-20 lg:py-24"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
-          <div>
-            <h2 className="mb-4 text-4xl font-orbitron font-black uppercase tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">
-                Legendary
-              </span>{" "}
-              <br />
-              <span className="text-red-600">Circuits</span>
-            </h2>
-            <div className="h-1 w-32 bg-red-600 skew-x-[-20deg]"></div>
-          </div>
-          <p className="mt-2 max-w-md text-left font-poppins text-sm text-gray-400 sm:text-base md:mt-0 md:text-right">
-            Master every corner, dominate every straight. Our tracks are
-            designed to push physics to the limit.
-          </p>
+    <section id="tracks" className="relative py-24 text-white overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4">
+        {/* Header */}
+        <div className="mb-20 text-center">
+          <h2 className="text-5xl font-black uppercase italic tracking-tighter sm:text-7xl">
+            Legendary <span className="text-red-600">Circuits</span>
+          </h2>
+          <div className="mx-auto mt-4 h-1 w-24 bg-red-600 skew-x-[-20deg]"></div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 md:gap-8">
-          {tracks.map((track) => (
-            <motion.div
-              key={track.id}
-              className="group relative h-[300px] overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 sm:h-[360px] lg:h-[400px]"
-              whileHover={{ scale: 0.985 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Background Image */}
-              <div className="absolute inset-0 z-0">
+        {/* The Grid */}
+        <div className="grid grid-cols-1 gap-y-24 gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
+          {tracks.map((track) => {
+            const isActive = activeCard === track.id;
+
+            return (
+              <div
+                key={track.id}
+                onClick={() => toggleCard(track.id)}
+                className={`group relative flex h-[400px] w-full items-end justify-center px-9 [perspective:2500px] cursor-pointer`}
+              >
+                {/* WRAPPER (Tilt Logic) */}
+                <div className={`absolute inset-0 z-[-1] transition-all duration-500 [transform-style:preserve-3d] 
+                  ${isActive ? '[transform:perspective(900px)_translateY(-5%)_rotateX(25deg)_translateZ(0)] shadow-[2px_35px_32px_-8px_rgba(0,0,0,0.75)]' : ''}
+                  group-hover:[transform:perspective(900px)_translateY(-5%)_rotateX(25deg)_translateZ(0)]
+                  group-hover:shadow-[2px_35px_32px_-8px_rgba(0,0,0,0.75)]`}>
+
+                  <img
+                    src={track.cover}
+                    className="h-full w-full object-cover rounded-lg"
+                    alt="cover"
+                  />
+
+                  {/* Overlays */}
+                  <div className={`absolute inset-0 rounded-lg bg-gradient-to-t from-[#0c0d13] via-transparent to-transparent transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0'} group-hover:opacity-100`} />
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-b from-transparent via-transparent to-[#0c0d13] opacity-100" />
+                </div>
+
+                {/* TITLE IMAGE (Float Forward) */}
                 <img
-                  src={track.image}
-                  alt={track.name}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700"
+                  src={track.titleImg}
+                  className={`relative w-full transition-transform duration-500 ${isActive ? '[transform:translate3d(0%,-50px,100px)]' : ''} group-hover:[transform:translate3d(0%,-50px,100px)]`}
+                  alt="title"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-              </div>
 
-              {/* Overlay Content */}
-              <div className="absolute inset-0 z-10 flex flex-col justify-end p-5 sm:p-8">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-red-500 font-orbitron font-bold text-sm tracking-widest uppercase flex items-center gap-2">
-                      <Zap className="w-4 h-4" /> {track.category}
-                    </span>
-                    <motion.div
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      initial={{ x: -20 }}
-                      whileInView={{ x: 0 }}
-                    >
-                      <Flag className="w-6 h-6 text-white" />
-                    </motion.div>
+                {/* CHARACTER IMAGE (Pop Out) */}
+                <img
+                  src={track.character}
+                  className={`absolute z-[-1] w-full transition-all duration-500 
+                    ${isActive ? 'opacity-100 [transform:translate3d(0%,-30%,100px)]' : 'opacity-0'}
+                    group-hover:opacity-100 group-hover:[transform:translate3d(0%,-30%,100px)] pointer-events-none`}
+                  alt="character"
+                />
+
+                {/* Stats revealed on hover/active */}
+                <div className={`absolute bottom-[-60px] flex w-full justify-between border-t border-white/10 pt-4 transition-all duration-500 
+                  ${isActive ? 'bottom-[-40px] opacity-100' : 'opacity-0'} 
+                  group-hover:bottom-[-40px] group-hover:opacity-100`}>
+                  <div className="flex items-center gap-1 text-[10px] font-bold uppercase text-gray-400">
+                    <MapPin className="h-3 w-3 text-red-600" /> {track.length}
                   </div>
-
-                  <h3 className="mb-4 text-2xl font-orbitron font-bold text-white transition-colors group-hover:text-red-500 sm:text-3xl md:text-4xl">
-                    {track.name}
-                  </h3>
-
-                  <div className="grid grid-cols-2 gap-4 border-t border-white/20 pt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    <div>
-                      <span className="text-gray-500 text-xs uppercase block mb-1">
-                        Length
-                      </span>
-                      <span className="text-white font-bold font-orbitron flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-red-600" />{" "}
-                        {track.length}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-gray-500 text-xs uppercase block mb-1">
-                        Turns
-                      </span>
-                      <span className="text-white font-bold font-orbitron flex items-center gap-2">
-                        <Timer className="w-4 h-4 text-red-600" /> {track.turns}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-1 text-[10px] font-bold uppercase text-gray-400">
+                    <Timer className="h-3 w-3 text-red-600" /> {track.turns} Turns
                   </div>
                 </div>
               </div>
-
-              {/* Border Animation */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-red-600/50 rounded-2xl transition-all duration-500 z-20"></div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
